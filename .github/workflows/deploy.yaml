@@ -14,7 +14,7 @@ jobs:
         key: ${{ secrets.GCE_KEY }}
         passphrase: ${{ secrets.GCE_PASSWORD }}
         script: |
+          git clone https://github.com/sunabozu/binance-price-change.git
+          git status
           cd binance-price-change
           ls
-          git pull origin master
-          git status
