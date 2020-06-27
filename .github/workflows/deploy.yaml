@@ -9,7 +9,7 @@ jobs:
     - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
-        host: 35.238.217.64
+        host: ${{ secrets.GCE_HOST }}
         username: troorl
         key: ${{ secrets.GCE_KEY }}
         script: |
@@ -18,3 +18,5 @@ jobs:
           git status
           cd binance-price-change
           npm i
+          pm2 stop binance-price-change
+          pm2 start binance-price-change
