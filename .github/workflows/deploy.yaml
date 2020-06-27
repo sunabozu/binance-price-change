@@ -15,8 +15,4 @@ jobs:
         username: troorl
         key: ${{ secrets.GCE_KEY }}
         port: 22
-        script: |
-          cd binance-price-change
-          ls
-          git pull origin master
-          git status
+        script: whoami
