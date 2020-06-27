@@ -1,0 +1,22 @@
+name: Deployment
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  job_one:
+    name: Sync the sources and build everything
+    runs-on: ubuntu-latest
+    steps:
+    - name: deploying the application
+      uses: appleboy/ssh-action@master
+      with:
+        host: 35.238.217.64
+        username: troorl
+        key: ${{ secrets.GCE_KEY }}
+        port: 22
+        script: |
+          cd binance-price-change
+          ls
+          git pull origin master
+          git status

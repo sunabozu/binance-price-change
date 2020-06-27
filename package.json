@@ -1,0 +1,43 @@
+{
+  "name": "binance-price-change",
+  "description": "Notifies me about completed orders",
+  "version": "0.0.0",
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "",
+    "email": ""
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/"
+  },
+  "engines": {
+    "node": "^9.0.0",
+    "npm": ">= 3.0.0"
+  },
+  "scripts": {
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "start": "node src/",
+    "dev": "node --inspect src/",
+    "deploy": "now --target staging -e pushed_key=@pushed_key -e pushed_secret=@pushed_secret -e binance_key=@binance_key -e binance_secret=@binance_secret --public"
+  },
+  "dependencies": {
+    "binance-api-node": "latest",
+    "compression": "^1.7.1",
+    "cors": "^2.8.4",
+    "helmet": "^3.11.0",
+    "npm": "^5.8.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
+    "serve-favicon": "^2.4.5",
+    "winston": "^3.0.0-rc1"
+  },
+  "devDependencies": {
+    "eslint": "^4.13.1"
+  }
+}
