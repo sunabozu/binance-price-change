@@ -106,7 +106,7 @@ setInterval(() => {
     const delta = topPrice - lastPrice
     console.log(`Top price: ${topPrice}, last price: ${lastPrice}, delta: ${delta}, array length: ${prices.length}`)
 
-    if(delta < 29)
+    if(delta < 189)
       return
     
     // console.log('😈😈😈 We got a big drop here, placing an order 😈😈😈')
