@@ -11,6 +11,7 @@ jobs:
       with:
         host: 35.238.217.64
         username: troorl
+        key: ${{ secrets.GCE_KEY }}
         passphrase: ${{ secrets.GCE_PASSWORD }}
         script: |
           cd binance-price-change
