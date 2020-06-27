@@ -12,10 +12,9 @@ jobs:
         host: 35.238.217.64
         username: troorl
         key: ${{ secrets.GCE_KEY }}
-        passphrase: ${{ secrets.GCE_PASSWORD }}
         script: |
           rm -rf binance-price-change
           git clone https://github.com/sunabozu/binance-price-change.git
           git status
           cd binance-price-change
-          ls
+          npm i
