@@ -32,7 +32,7 @@ const app = http.createServer((request, response) => {
   response.end();
 })
 
-app.listen(8080)
+app.listen(8080, '0.0.0.0')
 
 // my binance stuff
 const Binance = require('binance-api-node').default
