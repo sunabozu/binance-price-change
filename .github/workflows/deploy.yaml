@@ -1,18 +1,38 @@
-name: Deployment
-on:
-  push:
-    branches: [ master ]
-
+name: remote ssh command
+on: [push]
 jobs:
-  job_one:
-    name: Sync the sources and build everything
+
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: deploying the application
+    - name: executing remote ssh commands using password
       uses: appleboy/ssh-action@master
       with:
         host: 35.238.217.64
         username: troorl
         key: ${{ secrets.GCE_KEY }}
-        port: 22
         script: whoami
+
+# name: Deployment
+# on:
+#   push:
+#     branches: [ master ]
+
+# jobs:
+#   job_one:
+#     name: Sync the sources and build everything
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: deploying the application
+#       uses: appleboy/ssh-action@master
+#       with:
+#         host: 35.238.217.64
+#         username: troorl
+#         key: ${{ secrets.GCE_KEY }}
+#         port: 22
+#         script: |
+#           cd binance-price-change
+#           ls
+#           git pull origin master
+#           git status
