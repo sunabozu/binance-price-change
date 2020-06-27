@@ -12,7 +12,12 @@ jobs:
         host: 35.238.217.64
         username: troorl
         key: ${{ secrets.GCE_KEY }}
-        script: whoami
+        password: ${{ GCE_PASSWORD }}
+        script: |
+          cd binance-price-change
+          ls
+          git pull origin master
+          git status
 
 # name: Deployment
 # on:
