@@ -1,5 +1,8 @@
 /* eslint-disable no-console */
 
+const path = require('path')
+let parent_dir = path.resolve(__dirname, '../..')
+console.log(parent_dir)
 
 // my binance stuff
 const Binance = require('binance-api-node').default
@@ -21,10 +24,6 @@ const bclient = Binance({
   apiKey: BINANCE_KEY,
   apiSecret: BINANCE_SECRET
 })
-
-const path = require('path')
-let parent_dir = path.resolve(__dirname, '../..')
-console.log(parent_dir)
 
 // local database
 const low = require('lowdb')
