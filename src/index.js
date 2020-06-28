@@ -15,29 +15,10 @@ const logger = createLogger({
   transports: [new transports.Console()]
 })
 
-// const app = require('./app');
-// const port = app.get('port');
-// const server = app.listen(port);
-
-// server.on('listening', () =>
-//   logger.info('Feathers application started on http://%s:%d', app.get('host'), port)
-// );
-
-const url = require('url')
-const http = require('http')
-const app = http.createServer((request, response) => {
-  const query = url.parse(request.url, true).query
-  response.writeHead(200, { 'Content-Type': 'text/html' });
-  response.write('This is a test page. Carry on.');
-  response.end();
-})
-
-app.listen(8080, '0.0.0.0')
-
 // my binance stuff
 const Binance = require('binance-api-node').default
 const request = require('request-promise-native')
-let { BINANCE_KEY, BINANCE_SECRET, PUSHED_KEY, PUSHED_SECRET } = process.env
+let { BINANCE_KEY, BINANCE_SECRET, PUSHED_KEY, PUSHED_SECRET, FIREBASE_KEY } = process.env
 
 // import keys manually, if it's not production
 if(!BINANCE_KEY) {
@@ -55,11 +36,27 @@ const bclient = Binance({
   apiSecret: BINANCE_SECRET
 })
 
+// local database
+const low = require('lowdb')
+const FileSync = require('lowdb/adapters/FileSync')
+const adapter = new FileSync('../db.json')
+const db = low(adapter)
+
 const prices = []
 const interval = 20000
 const changeTime = 60000 * 60 //300000
 const elementsInterval = changeTime / interval
 let lastPush = null // new Date().getTime()
+let DELTA = 189 // default
+
+// get the delta from file
+// db.set('settings.delta', 1488).write()
+const settings = db.get('settings').value()
+
+if(settings && settings.delta) {
+  DELTA = settings.delta
+}
+console.log(db.get('settings').value())
 
 setInterval(() => {
   //console.log('fetching prices...')
@@ -78,27 +75,6 @@ setInterval(() => {
       prices.shift()
     }
 
-    // make sure we have enough data to analize
-    // if(prices.length < elementsInterval)
-    //   return
-    
-    // const firstRelevantPrice = prices[prices.length - elementsInterval + 1]
-    // const delta = prices[prices.length - 1] - firstRelevantPrice
-    // // console.log('delta: ' + delta)
-
-    // // we're only interested in negative changes
-    // if(delta >= 0)
-    //   return
-    
-    // const relativeChange = delta * -1 / firstRelevantPrice * 100
-    // console.log(`The prices dropped by ${relativeChange.toFixed(3)}%`)
-
-    // // the change should be significant enough
-    // if(relativeChange < 0.6)
-    //   return
-
-    
-
     // find the highest price in this period
     const topPrice = Math.max(...prices)
     
@@ -106,22 +82,8 @@ setInterval(() => {
     const delta = topPrice - lastPrice
     console.log(`Top price: ${topPrice}, last price: ${lastPrice}, delta: ${delta}, array length: ${prices.length}`)
 
-    if(delta < 189)
+    if(delta < DELTA)
       return
-    
-    // console.log('😈😈😈 We got a big drop here, placing an order 😈😈😈')
-    // bclient.order({
-    //   symbol: 'BTCUSDT',
-    //   side: 'BUY',
-    //   quantity: 0.014,
-    //   price: lastPrice - 5
-    // })
-    // .then(resp => {
-    //   if(resp.status == 'NEW') {
-    //     console.log('The order is placed!')
-    //   }
-    // })
-
 
     // check if already pushed recently
     console.log('push difference: ', new Date().getTime() - lastPush, changeTime)
@@ -157,3 +119,58 @@ setInterval(() => {
     logger.info(err)
   })
 }, interval)
+
+// const url = require('url')
+// const http = require('http')
+// const app = http.createServer((request, response) => {
+//   const query = url.parse(request.url, true).query
+//   response.writeHead(200, { 'Content-Type': 'text/html' });
+//   response.write(`
+//   <html>
+//     <body>
+//       <form method="post" action="/">
+//         Delta: <input type="text" name="delta" value="${DELTA}" focused />
+//         <input type="submit" value="save" />
+//       </form>
+//     </body>
+//   </html>`);
+//   response.end();
+
+//   if(request.method == 'POST') {
+//     console.log(request)
+//   }
+// })
+
+// app.listen(8080, '0.0.0.0')
+
+const express = require('express')
+const app = express()
+app.use(express.urlencoded())
+
+app.get('/', (req, res) => {
+  res.send(`
+  <html>
+    <body>
+      <form method="post" action="/update">
+        Delta: <input type="text" name="delta" value="${DELTA}" focused />
+        <input type="submit" value="save" />
+      </form>
+    </body>
+  </html>
+  `)
+})
+
+app.post('/update', (req, res) => {
+  console.log(req.body)
+  if(req.body.delta) {
+    try {
+      DELTA = parseInt(req.body.delta)
+      db.set('settings.delta', DELTA).write()
+    } catch(e) {
+      console.log(e)
+    }
+  }
+  res.redirect('/')
+})
+
+app.listen(8080, '0.0.0.0')
