@@ -42,7 +42,7 @@ let { BINANCE_KEY, BINANCE_SECRET, PUSHED_KEY, PUSHED_SECRET } = process.env
 // import keys manually, if it's not production
 if(!BINANCE_KEY) {
   console.log(`The keys are absent, trying to get them from a file...`)
-  now_keys = require('../env.json').env
+  now_keys = require('../../env.json').env
   BINANCE_KEY = now_keys.binance_key
   BINANCE_SECRET = now_keys.binance_secret
   PUSHED_KEY = now_keys.pushed_key

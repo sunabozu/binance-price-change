@@ -18,5 +18,4 @@ jobs:
           git status
           cd binance-price-change
           npm i
-          pm2 stop binance-price-change
-          pm2 start binance-price-change
+          pm2 restart binance-price-change
