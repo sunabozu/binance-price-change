@@ -13,9 +13,9 @@ jobs:
         username: troorl
         key: ${{ secrets.GCE_KEY }}
         script: |
-          rm -rf binance-price-change
-          git clone https://github.com/sunabozu/binance-price-change.git
+          rm -rf ${{ PROJ_NAME }}
+          git clone https://github.com/sunabozu/${{ PROJ_NAME }}.git
           git status
-          cd binance-price-change
+          cd ${{ PROJ_NAME }}
           npm i
-          pm2 restart binance-price-change
+          pm2 restart ${{ PROJ_NAME }}

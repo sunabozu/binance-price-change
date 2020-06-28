@@ -39,7 +39,6 @@ let lastPush = null // new Date().getTime()
 let DELTA = 189 // default
 
 // get the delta from file
-// db.set('settings.delta', 1488).write()
 const settings = db.get('settings').value()
 
 if(settings && settings.delta) {
