@@ -9,7 +9,7 @@ let { BINANCE_KEY, BINANCE_SECRET, PUSHED_KEY, PUSHED_SECRET, FIREBASE_KEY } = p
 // import keys manually, if it's not production
 if(!BINANCE_KEY) {
   console.log(`The keys are absent, trying to get them from a file...`)
-  now_keys = require('../../env.json').env
+  now_keys = require(`${parent_dir}/env.json`).env
   BINANCE_KEY = now_keys.binance_key
   BINANCE_SECRET = now_keys.binance_secret
   PUSHED_KEY = now_keys.pushed_key
@@ -22,12 +22,14 @@ const bclient = Binance({
   apiSecret: BINANCE_SECRET
 })
 
-console.log(__dirname)
+const path = require('path')
+let parent_dir = path.resolve(__dirname, '../..')
+console.log(parent_dir)
 
 // local database
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync(`../db.json`)
+const adapter = new FileSync(`${parent_dir}/db.json`)
 const db = low(adapter)
 
 const prices = []
