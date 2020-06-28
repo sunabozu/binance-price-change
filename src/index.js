@@ -22,10 +22,12 @@ const bclient = Binance({
   apiSecret: BINANCE_SECRET
 })
 
+console.log(__dirname)
+
 // local database
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync('../db.json')
+const adapter = new FileSync(`../db.json`)
 const db = low(adapter)
 
 const prices = []
