@@ -1,19 +1,5 @@
 /* eslint-disable no-console */
-// const logger = require('winston');
-const { createLogger, format, transports } = require('winston')
-const { combine, timestamp, label, printf } = format
-const myFormat = printf(info => {
-  return `[${info.timestamp}] ${info.level}: ${info.message}`;
-})
 
-const logger = createLogger({
-  format: combine(
-    timestamp(),
-    format.splat(),
-    myFormat
-  ),
-  transports: [new transports.Console()]
-})
 
 // my binance stuff
 const Binance = require('binance-api-node').default
@@ -112,36 +98,14 @@ setInterval(() => {
       console.log('Pushed successfully') 
     })
     .catch(err => {
-      logger.error(err)
+      console.log(err)
     })
   })
   .catch(err => {
-    logger.info(err)
+    console.log(err)
   })
 }, interval)
 
-// const url = require('url')
-// const http = require('http')
-// const app = http.createServer((request, response) => {
-//   const query = url.parse(request.url, true).query
-//   response.writeHead(200, { 'Content-Type': 'text/html' });
-//   response.write(`
-//   <html>
-//     <body>
-//       <form method="post" action="/">
-//         Delta: <input type="text" name="delta" value="${DELTA}" focused />
-//         <input type="submit" value="save" />
-//       </form>
-//     </body>
-//   </html>`);
-//   response.end();
-
-//   if(request.method == 'POST') {
-//     console.log(request)
-//   }
-// })
-
-// app.listen(8080, '0.0.0.0')
 
 const express = require('express')
 const app = express()
