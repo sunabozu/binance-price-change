@@ -7,7 +7,7 @@ console.log(parent_dir)
 // my binance stuff
 const Binance = require('binance-api-node').default
 const request = require('request-promise-native')
-let { BINANCE_KEY, BINANCE_SECRET, PUSHED_KEY, PUSHED_SECRET, FIREBASE_KEY } = process.env
+let { BINANCE_KEY, BINANCE_SECRET, PUSHED_KEY, PUSHED_SECRET } = {} //process.env
 
 // import keys manually, if it's not production
 if(!BINANCE_KEY) {
